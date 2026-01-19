@@ -1,0 +1,79 @@
+/**
+ * TodoList.css - TodoListコンポーネントのスタイル
+ */
+
+.todo-list-container {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  min-height: 200px;
+}
+
+/* リストヘッダー */
+.list-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.list-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #212529;
+  margin: 0;
+}
+
+/* Todoリスト */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 空の状態 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #495057;
+  margin: 0 0 12px 0;
+}
+
+.empty-message {
+  font-size: 16px;
+  color: #6c757d;
+  margin: 0;
+  max-width: 400px;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 576px) {
+  .todo-list-container {
+    padding: 12px;
+  }
+
+  .empty-icon {
+    font-size: 60px;
+  }
+
+  .empty-title {
+    font-size: 20px;
+  }
+
+  .empty-message {
+    font-size: 14px;
+  }
+}
