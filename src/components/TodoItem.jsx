@@ -169,6 +169,12 @@ const TodoItem = ({ todo, onStatusChange, onEdit, onDelete }) => {
               >
                 {todo.text}
               </span>
+              {/* 期限表示 */}
+              {todo.dueDate && (
+                <span className="due-date">
+                  {new Date(todo.dueDate).toLocaleDateString()}
+                </span>
+              )}
               {/* ステータスバッジ */}
               <span
                 className="status-badge"

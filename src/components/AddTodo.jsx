@@ -67,6 +67,13 @@ const AddTodo = ({ onAdd }) => {
           aria-label="新しいTodoを入力"
           maxLength={200} // 最大文字数を制限
         />
+        {/* 期限を追加 */}
+        <input
+          type="date"
+          className="due-date-input"
+          value={inputValue.dueDate || ''}
+          aria-label="期限を選択"
+        />
 
         {/* 追加ボタン */}
         <button
