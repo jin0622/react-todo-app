@@ -18,6 +18,7 @@ const AddTodo = ({ onAdd }) => {
 
   // inputValue: 入力フィールドの値を管理
   const [inputValue, setInputValue] = useState('');
+  const [dueDate, setDueDate] = useState('');  // ← 期限の状態を追加
 
   // --- イベントハンドラー ---
 
@@ -32,10 +33,11 @@ const AddTodo = ({ onAdd }) => {
     // 入力値が空白のみでないかチェック
     if (inputValue.trim()) {
       // 親コンポーネントにTodo追加を通知
-      onAdd(inputValue);
+      onAdd(inputValue, dueDate || null);
 
       // 入力フィールドをクリア
       setInputValue('');
+      setDueDate(''); // 期限フィールドもクリア
     }
   };
 
@@ -70,8 +72,9 @@ const AddTodo = ({ onAdd }) => {
         {/* 期限を追加 */}
         <input
           type="date"
-          className="due-date-input"
-          value={inputValue.dueDate || ''}
+          className="date-input"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
           aria-label="期限を選択"
         />
 

@@ -25,6 +25,9 @@ const TodoItem = ({ todo, onStatusChange, onEdit, onDelete }) => {
   // editText: 編集中のテキストを管理
   const [editText, setEditText] = useState(todo.text);
 
+  // 📍 編集モードでは期限も編集できるようにする
+  const [editDueDate, setEditDueDate] = useState(todo.dueDate || '');
+  
   // --- ステータス設定 ---
 
   // 各ステータスの定義（値、表示名、色）
@@ -76,7 +79,7 @@ const TodoItem = ({ todo, onStatusChange, onEdit, onDelete }) => {
     // 空白のみの場合は保存しない
     if (editText.trim()) {
       // 親コンポーネントに編集内容を通知
-      onEdit(todo.id, editText);
+      onEdit(todo.id, editText, editDueDate || null);  // ← 期限も渡す
       // 編集モードを終了
       setIsEditing(false);
     }
@@ -140,6 +143,12 @@ const TodoItem = ({ todo, onStatusChange, onEdit, onDelete }) => {
               autoFocus // 自動的にフォーカス
               aria-label="Todoテキストを編集"
             />
+            <input
+              type="date"
+              className="date-input"
+              value={editDueDate}
+              onChange={(e) => setEditDueDate(e.target.value)}
+            />
             <div className="edit-buttons">
               <button
                 className="btn btn-save"
@@ -169,10 +178,10 @@ const TodoItem = ({ todo, onStatusChange, onEdit, onDelete }) => {
               >
                 {todo.text}
               </span>
-              {/* 期限表示 */}
+              {/* ← 期限表示を追加 */}
               {todo.dueDate && (
                 <span className="due-date">
-                  {new Date(todo.dueDate).toLocaleDateString()}
+                  📅 {new Date(todo.dueDate).toLocaleDateString('ja-JP')}
                 </span>
               )}
               {/* ステータスバッジ */}

@@ -28,7 +28,22 @@
   gap: 12px;
   margin-bottom: 8px;
 }
+/* .input-group の下に追加 */
+.date-input {
+  padding: 14px 16px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: white;
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
 
+.date-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+}
 /* Todo入力フィールド */
 .todo-input {
   flex: 1;

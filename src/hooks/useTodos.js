@@ -45,8 +45,9 @@ export const useTodos = () => {
   /**
    * 新しいTodoを追加する
    * @param {string} text - Todoのテキスト
+   * @param {string} dueDate - Todoの期限
    */
-  const addTodo = (text) => {
+  const addTodo = (text, dueDate) => {
     // 空白のみのテキストは追加しない
     if (!text.trim()) {
       return;
@@ -57,6 +58,7 @@ export const useTodos = () => {
       id: Date.now(), // 現在のタイムスタンプを一意のIDとして使用
       text: text.trim(), // 前後の空白を削除
       status: 'not-started', // 初期状態は「未完了」
+      dueDate: dueDate,  // ← 期限を追加
       createdAt: new Date().toISOString(), // 作成日時（ISO形式）
       updatedAt: new Date().toISOString(), // 更新日時（ISO形式）
     };
@@ -88,8 +90,9 @@ export const useTodos = () => {
    * Todoのテキストを編集する
    * @param {number} id - 編集するTodoのID
    * @param {string} newText - 新しいテキスト
+   * @param {string} newDueDate - Todoの期限
    */
-  const editTodo = (id, newText) => {
+  const editTodo = (id, newText, newDueDate) => {
     // 空白のみのテキストには変更しない
     if (!newText.trim()) {
       return;
@@ -101,6 +104,7 @@ export const useTodos = () => {
           ? {
               ...todo,
               text: newText.trim(),
+              dueDate: newDueDate, // 期限を更新
               updatedAt: new Date().toISOString(),
             }
           : todo
