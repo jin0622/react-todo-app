@@ -30,14 +30,8 @@ jobs:
           command: npm run lint
 
       - run:
-          name: Build  # ビルドが成功するか確認（成果物はartifactsに保存）
+          name: Build  # ビルドが成功するか確認
           command: npm run build
-
-      # ビルド成果物（dist/）を後続のdeployジョブで使えるように保存
-      - persist_to_workspace:
-          root: .
-          paths:
-            - dist
 
   # ----------------------------
   # デプロイジョブ
@@ -50,11 +44,18 @@ jobs:
     docker:
       - image: cimg/node:22.0
     steps:
-      - checkout  # package.jsonなどの設定ファイルを取得
+      - checkout
 
-      # testジョブで作ったビルド成果物（dist/）を引き継ぐ
-      - attach_workspace:
-          at: .
+      # deployジョブでも依存関係をインストール（viteが必要）
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "package-lock.json" }}
+
+      - run: npm ci
+
+      - run:
+          name: Build  # デプロイ用にビルド
+          command: npm run build
 
       - run:
           name: Deploy to Netlify  # Netlify CLIでプロダクション環境にデプロイ

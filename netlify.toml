@@ -1,0 +1,3 @@
+[build]
+  publish = "dist"
+  # buildコマンドは空（CircleCIがビルド済みのdist/をデプロイするため不要）
