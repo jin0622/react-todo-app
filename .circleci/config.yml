@@ -1,0 +1,73 @@
+version: 2.1
+
+jobs:
+  # ----------------------------
+  # テストジョブ
+  # Lintチェックとビルド確認を行う
+  # （Jestを導入したら unit tests ステップを追加する）
+  # ----------------------------
+  test:
+    docker:
+      - image: cimg/node:22.0  # Node.js 22 の公式CircleCIイメージ
+    steps:
+      - checkout  # リポジトリのコードを取得
+
+      # node_modulesをキャッシュから復元（package-lock.jsonが変わると無効）
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "package-lock.json" }}
+
+      - run: npm ci  # package-lock.jsonに基づいてクリーンインストール
+
+      # キャッシュを保存（次回以降のビルドを高速化）
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-deps-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Lint  # ESLintでコード品質チェック
+          command: npm run lint
+
+      - run:
+          name: Build  # ビルドが成功するか確認（成果物はartifactsに保存）
+          command: npm run build
+
+      # ビルド成果物（dist/）を後続のdeployジョブで使えるように保存
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+
+  # ----------------------------
+  # デプロイジョブ
+  # testジョブが成功した場合のみ実行される
+  # 事前にCircleCIの環境変数に以下を設定すること:
+  #   NETLIFY_AUTH_TOKEN: Netlifyのパーソナルアクセストークン
+  #   NETLIFY_SITE_ID: NetlifyのサイトID
+  # ----------------------------
+  deploy:
+    docker:
+      - image: cimg/node:22.0
+    steps:
+      - checkout  # package.jsonなどの設定ファイルを取得
+
+      # testジョブで作ったビルド成果物（dist/）を引き継ぐ
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Deploy to Netlify  # Netlify CLIでプロダクション環境にデプロイ
+          command: npx netlify-cli deploy --prod --dir=dist
+
+workflows:
+  ci:
+    jobs:
+      - test  # 全ブランチでテスト実行
+
+      - deploy:
+          requires:
+            - test  # testジョブが成功した場合のみデプロイ
+          filters:
+            branches:
+              only: main  # mainブランチへのpushのみデプロイ
