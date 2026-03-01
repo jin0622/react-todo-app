@@ -168,5 +168,8 @@ MIT License
 問題が発生した場合や質問がある場合は、GitHubのissueセクションで報告してください。
 
 ---
+# netlifyでデプロイ
+
+# Circle ciにてテスト、ビルド
 
 Made with ❤️ using React

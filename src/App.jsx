@@ -44,7 +44,7 @@ function App() {
             <span className="title-icon">✨</span>
           </h1>
           <p className="app-subtitle">
-            効率的にタスクを管理しましょう！
+            効率的にタスクを管理しよう！
           </p>
         </div>
       </header>
